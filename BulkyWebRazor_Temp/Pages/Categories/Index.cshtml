@@ -1,4 +1,5 @@
-﻿@model List<Category>
+﻿@page
+@model BulkyWebRazor_Temp.Pages.Categories.IndexModel
 
 
 
@@ -8,7 +9,7 @@
             <h2 class="text-primary">类别表</h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="Category" asp-action="Create" class="btn btn-primary">
+            <a asp-page="/Categories/Create" class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i> &ensp;创建新的类别
             </a>
         </div>
@@ -24,17 +25,17 @@
         </thead>
 
         <tbody>
-            @foreach (var category in Model.OrderBy(c => c.DisplayOrder))
+            @foreach (var category in Model.CategoryList.OrderBy(c => c.DisplayOrder))
             {
                 <tr>
                     <td>@category.Name</td>
                     <td>@category.DisplayOrder</td>
                     <td class="text-center col-4">
                         <div class="w-50 btn-group" role="group">
-                            <a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-primary">
+                            <a asp-page="/Categories/edit" asp-route-id="@category.Id" class="btn btn-primary">
                                 <i class="bi bi-pencil-square"></i> &ensp;编辑
                             </a>
-                            <a asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger">
+                            <a asp-page="/Categories/delete" asp-route-id="@category.Id" class="btn btn-danger">
                                 <i class="bi bi-trash-fill"></i> &ensp;删除
                             </a>
                         </div>

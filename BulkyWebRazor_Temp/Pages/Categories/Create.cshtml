@@ -1,0 +1,43 @@
+﻿@page
+@model BulkyWebRazor_Temp.Pages.Categories.CreateModel
+
+
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">创建类别</h2>
+            <hr />
+        </div>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3 row p-1">
+            @* <label class="p-0">类别名称</label> *@
+            <label class="p-0" asp-for="Category.Name"></label>
+            <input asp-for="Category.Name" class="form-control" />
+            <span asp-validation-for="Category.Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 row p-1">
+            @* <label class="p-0">显示顺序</label> *@
+            <label class="p-0" asp-for="Category.DisplayOrder"></label>
+            <input asp-for="Category.DisplayOrder" class="form-control" />
+            <span asp-validation-for="Category.DisplayOrder" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button class="btn btn-primary form-control">创建</button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a class="btn btn-secondary border form-control" asp-page="/Categories/Index">返回</a>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
