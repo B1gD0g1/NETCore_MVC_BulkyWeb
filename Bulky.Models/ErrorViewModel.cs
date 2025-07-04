@@ -1,4 +1,4 @@
-namespace NETCore_MVC_BulkyWeb.Models
+namespace Bulky.Models
 {
     public class ErrorViewModel
     {

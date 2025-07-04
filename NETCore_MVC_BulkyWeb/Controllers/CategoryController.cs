@@ -1,22 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NETCore_MVC_BulkyWeb.Data;
-using NETCore_MVC_BulkyWeb.Models;
+﻿using Bulky.DataAccess.Data;
+using Bulky.DataAccess.Repository.IRepository;
+using Bulky.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace NETCore_MVC_BulkyWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryController(ApplicationDbContext DbContext)
+        public CategoryController(ICategoryRepository categoryRepository)
         {
-            dbContext = DbContext;
+            _categoryRepository = categoryRepository;
         }
 
         public IActionResult Index()
         {
-            List<Category> objCategoryList = dbContext.Categories.ToList();
+            List<Category> objCategoryList = _categoryRepository.GetAll().ToList();
 
             return View(objCategoryList);
         }
@@ -31,8 +32,8 @@ namespace NETCore_MVC_BulkyWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                dbContext.Categories.Add(category);
-                await dbContext.SaveChangesAsync();
+                _categoryRepository.Add(category);
+                await _categoryRepository.SaveAsync();
 
                 TempData["success"] = "类别创建成功！";
 
@@ -53,7 +54,8 @@ namespace NETCore_MVC_BulkyWeb.Controllers
                 return NotFound();
             }
 
-            Category? categoryFromDb = dbContext.Categories.Find(id);//首先检查DbContext的本地缓存（内存中），如果找到就直接返回，不访问数据库
+            Category? categoryFromDb = _categoryRepository.Get(c => c.Id == id);
+            //Category? categoryFromDb = dbContext.Categories.Find(id);//首先检查DbContext的本地缓存（内存中），如果找到就直接返回，不访问数据库
             //Category? categoryFromDb = dbContext.Categories.FirstOrDefault(c => c.Id == id);
             //Category? categoryFromDb = dbContext.Categories.Where(c => c.Id == id).FirstOrDefault();
 
@@ -70,8 +72,8 @@ namespace NETCore_MVC_BulkyWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                dbContext.Categories.Update(category);
-                await dbContext.SaveChangesAsync();
+                _categoryRepository.Update(category);
+                await _categoryRepository.SaveAsync();
 
                 TempData["success"] = "类别更新成功！";
 
@@ -92,7 +94,7 @@ namespace NETCore_MVC_BulkyWeb.Controllers
                 return NotFound();
             }
 
-            Category? categoryFromDb = dbContext.Categories.Find(id);//首先检查DbContext的本地缓存（内存中），如果找到就直接返回，不访问数据库
+            Category? categoryFromDb = _categoryRepository.Get(c => c.Id == id);
 
             if (categoryFromDb is null)
             {
@@ -105,15 +107,15 @@ namespace NETCore_MVC_BulkyWeb.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeletePost(int? id)
         {
-            var categoryToDelete = dbContext.Categories.Find(id);
+            var categoryToDelete =  _categoryRepository.Get(c => c.Id == id);
 
             if (categoryToDelete is null)
             {
                 return NotFound();
             }
 
-            dbContext.Categories.Remove(categoryToDelete);
-            await dbContext.SaveChangesAsync();
+            _categoryRepository.Remove(categoryToDelete);
+            await _categoryRepository.SaveAsync();
 
             TempData["success"] = "类别删除成功！";
 

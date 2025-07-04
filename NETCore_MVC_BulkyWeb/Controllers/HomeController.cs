@@ -1,6 +1,6 @@
 using System.Diagnostics;
+using Bulky.Models;
 using Microsoft.AspNetCore.Mvc;
-using NETCore_MVC_BulkyWeb.Models;
 
 namespace NETCore_MVC_BulkyWeb.Controllers
 {

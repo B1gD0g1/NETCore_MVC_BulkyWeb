@@ -1,7 +1,7 @@
-﻿using NETCore_MVC_BulkyWeb.Models;
+﻿using Bulky.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace NETCore_MVC_BulkyWeb.Data
+namespace Bulky.DataAccess.Data
 {
     public class Category_EnsureNameIsNotTest: ValidationAttribute
     {

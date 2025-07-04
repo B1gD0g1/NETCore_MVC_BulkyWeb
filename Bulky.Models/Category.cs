@@ -1,8 +1,7 @@
-﻿using NETCore_MVC_BulkyWeb.Data;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace NETCore_MVC_BulkyWeb.Models
+namespace Bulky.Models
 {
     public class Category: IValidatableObject
     {
