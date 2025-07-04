@@ -19,11 +19,6 @@ namespace Bulky.DataAccess.Repository
             this.dbContext = dbContext;
         }
 
-        public async Task SaveAsync()
-        {
-            await dbContext.SaveChangesAsync();
-        }
-
         public void Update(Category categoryObj)
         {
             dbContext.Categories.Update(categoryObj);

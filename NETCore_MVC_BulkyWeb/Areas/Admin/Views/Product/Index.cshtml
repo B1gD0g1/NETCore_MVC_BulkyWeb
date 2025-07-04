@@ -1,0 +1,60 @@
+﻿@model List<Product>
+
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-success bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-1">类别表</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        <div class="row pd-3">
+            <div class="col-6">
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Product" asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> &ensp;创建新的产品
+                </a>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>产品标题</th>
+                    <th>国际标准图书编号</th>
+                    <th>作者</th>
+                    <th>基础价格</th>
+                    <th>类别</th>
+                    <th class="col-4"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>@product.Title</td>
+                        <td>@product.ISBN</td>
+                        <td>@product.Author</td>
+                        <td>@product.ListPrice</td>
+                        <td></td>
+                        <td class="text-center col-4">
+                            <div class="w-50 btn-group" role="group">
+                                <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.ProductId" class="btn btn-primary">
+                                    <i class="bi bi-pencil-square"></i> &ensp;编辑
+                                </a>
+                                <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-danger">
+                                    <i class="bi bi-trash-fill"></i> &ensp;删除
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
