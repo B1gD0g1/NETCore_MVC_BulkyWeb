@@ -17,6 +17,8 @@ namespace Bulky.Models
         //[Range(1,100, ErrorMessage = "该字段必须在1~100之间。")]
         public int DisplayOrder { get; set; }
 
+        public List<Product> Products { get; set; }
+
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

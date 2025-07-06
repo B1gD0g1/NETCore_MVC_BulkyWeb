@@ -14,7 +14,7 @@
             <div class="col-6">
             </div>
             <div class="col-6 text-end">
-                <a asp-controller="Product" asp-action="Create" class="btn btn-primary">
+                <a asp-controller="Product" asp-action="UpdateAndInsert" class="btn btn-primary">
                     <i class="bi bi-plus-circle"></i> &ensp;创建新的产品
                 </a>
             </div>
@@ -43,7 +43,7 @@
                         <td></td>
                         <td class="text-center col-4">
                             <div class="w-50 btn-group" role="group">
-                                <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.ProductId" class="btn btn-primary">
+                                <a asp-controller="Product" asp-action="UpdateAndInsert" asp-route-id="@product.ProductId" class="btn btn-primary">
                                     <i class="bi bi-pencil-square"></i> &ensp;编辑
                                 </a>
                                 <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-danger">

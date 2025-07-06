@@ -74,11 +74,18 @@ namespace Bulky.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -100,6 +107,8 @@ namespace Bulky.DataAccess.Migrations
 
                     b.HasKey("ProductId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products");
 
                     b.HasData(
@@ -107,8 +116,10 @@ namespace Bulky.DataAccess.Migrations
                         {
                             ProductId = 1,
                             Author = "吴承恩",
+                            CategoryId = 3,
                             Description = "主要讲述了孙悟空出世，并寻菩提祖师学艺及大闹天宫后，与猪八戒、沙僧和白龙马一同护送唐僧西天取经，于路上历经险阻，降妖除魔，渡过了九九八十一难，成功到达大雷音寺，向如来佛祖求得《三藏真经》，最后五圣成真的故事。",
                             ISBN = "SWD9999001",
+                            ImageUrl = "",
                             ListPrice = 99.0,
                             Price = 90.0,
                             Price100 = 80.0,
@@ -119,8 +130,10 @@ namespace Bulky.DataAccess.Migrations
                         {
                             ProductId = 2,
                             Author = "曹雪芹",
+                            CategoryId = 3,
                             Description = "书叙西方灵河岸上三生石畔的绛珠仙子，为了酬报神瑛侍者的灌溉之恩，要将毕生的泪水偿还，就随其下凡历劫。宝玉为神瑛侍者转世，林黛玉为绛珠仙子转世，这段姻缘称为“木石前盟”。",
                             ISBN = "CAW777777701",
+                            ImageUrl = "",
                             ListPrice = 40.0,
                             Price = 30.0,
                             Price100 = 20.0,
@@ -131,8 +144,10 @@ namespace Bulky.DataAccess.Migrations
                         {
                             ProductId = 3,
                             Author = "阿加莎·克里斯蒂",
+                            CategoryId = 4,
                             Description = "八个素不相识的人受邀来到海岛黑人岛上。他们抵达后，接待他们的却只是管家罗杰斯夫妇俩。用晚餐的时候，餐厅里的留声机忽然响起，指控他们宾客以及管家夫妇这十人都曾犯有谋杀罪。众人正在惶恐之际，来宾之一忽然死亡，噩梦由此开始了。",
                             ISBN = "RITO5555501",
+                            ImageUrl = "",
                             ListPrice = 55.0,
                             Price = 50.0,
                             Price100 = 35.0,
@@ -143,8 +158,10 @@ namespace Bulky.DataAccess.Migrations
                         {
                             ProductId = 4,
                             Author = "柯南·道尔",
+                            CategoryId = 4,
                             Description = "福尔摩斯自称是顾问侦探，当其他警探或私家侦探遇到困难时常向他求救。他头脑冷静、观察力敏锐、推理能力突出，善于通过观察与演绎推理和法学知识来解决问题。平常他都悠闲地在贝克街221号的B室里，抽着烟斗等待委托上门，一旦接到案子，他立刻会变成一匹追逐猎物的猎犬，开始锁定目标，将整个事件抽丝剥茧、层层过滤，直到最后真相大白。",
                             ISBN = "WS3333333301",
+                            ImageUrl = "",
                             ListPrice = 70.0,
                             Price = 65.0,
                             Price100 = 55.0,
@@ -155,8 +172,10 @@ namespace Bulky.DataAccess.Migrations
                         {
                             ProductId = 5,
                             Author = "斯蒂芬·埃德温·金",
+                            CategoryId = 1,
                             Description = "银行家安迪被误判谋杀妻子及其情人而入狱后，如何不动声色、步步为营地谋划自救，最终成功越狱、重获自由的故事。",
                             ISBN = "SOTJ1111111101",
+                            ImageUrl = "",
                             ListPrice = 30.0,
                             Price = 27.0,
                             Price100 = 20.0,
@@ -167,14 +186,32 @@ namespace Bulky.DataAccess.Migrations
                         {
                             ProductId = 6,
                             Author = "丹尼尔·笛福",
+                            CategoryId = 2,
                             Description = "主人公鲁滨逊·克鲁索出生于一个中产阶级家庭，一生志在遨游四海的故事。一次在去非洲航海的途中遇到风暴，只身漂流到一个无人的荒岛上，开始了一段与世隔绝的生活。他凭着强韧的意志与不懈的努力，在荒岛上顽强地生存下来，在岛上生活了28年2个月零19天后，最终得以返回故乡。",
                             ISBN = "FOT000000001",
+                            ImageUrl = "",
                             ListPrice = 25.0,
                             Price = 23.0,
                             Price100 = 20.0,
                             Price50 = 22.0,
                             Title = "鲁滨逊漂流记"
                         });
+                });
+
+            modelBuilder.Entity("Bulky.Models.Product", b =>
+                {
+                    b.HasOne("Bulky.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Bulky.Models.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
