@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <table class="table table-bordered table-striped mt-3">
+        <table id="tblData" class="table table-bordered table-striped mt-3">
             <thead>
                 <tr>
                     <th>产品标题</th>
@@ -33,28 +33,33 @@
             </thead>
 
             <tbody>
-                @foreach (var product in Model)
+                @* @foreach (var product in model)
                 {
                     <tr>
-                        <td>@product.Title</td>
-                        <td>@product.ISBN</td>
-                        <td>@product.Author</td>
-                        <td>@product.ListPrice</td>
-                        <td></td>
+                        <td>@product.title</td>
+                        <td>@product.isbn</td>
+                        <td>@product.author</td>
+                        <td>@product.listprice</td>
+                        <td>@product.category.name</td>
                         <td class="text-center col-4">
                             <div class="w-50 btn-group" role="group">
-                                <a asp-controller="Product" asp-action="UpdateAndInsert" asp-route-id="@product.ProductId" class="btn btn-primary">
+                                <a asp-controller="product" asp-action="updateandinsert" asp-route-id="@product.productid" class="btn btn-primary">
                                     <i class="bi bi-pencil-square"></i> &ensp;编辑
                                 </a>
-                                <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-danger">
+                                <a asp-controller="product" asp-action="delete" asp-route-id="@product.productid" class="btn btn-danger">
                                     <i class="bi bi-trash-fill"></i> &ensp;删除
                                 </a>
                             </div>
                         </td>
                     </tr>
-                }
+                } *@
             </tbody>
         </table>
     </div>
 </div>
+
+
+@section Scripts{
+    <script src="~/js/product.js"></script>
+}
 

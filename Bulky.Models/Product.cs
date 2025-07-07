@@ -16,7 +16,6 @@ namespace Bulky.Models
 
         [Required(ErrorMessage = "标题不能为空。")]
         [Display(Name = "标题")]
-
         public string Title { get; set; }
 
         [Display(Name = "简介")]

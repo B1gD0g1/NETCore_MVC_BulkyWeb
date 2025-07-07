@@ -1,0 +1,7 @@
+﻿.product-image {
+    width: 100%; /* 宽度填满容器 */
+    height: 350px; /* 固定高度 */
+    object-fit: contain; /* 保持比例并裁剪多余部分 */
+    object-position: center; /* 图片居中显示 */
+    background-color: #f8f9fa;
+}
