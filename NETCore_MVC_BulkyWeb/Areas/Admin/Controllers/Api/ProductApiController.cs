@@ -1,5 +1,7 @@
 ﻿using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models.DTOModels;
+using Bulky.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NETCore_MVC_BulkyWeb.Areas.Admin.Controllers.Api
@@ -7,6 +9,7 @@ namespace NETCore_MVC_BulkyWeb.Areas.Admin.Controllers.Api
     [Area("Admin")]
     [ApiController]
     [Route("admin/api/[controller]")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductApiController: ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
