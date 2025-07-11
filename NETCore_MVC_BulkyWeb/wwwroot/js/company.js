@@ -11,33 +11,23 @@ $(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            url: '/admin/api/productapi/getall',
-            //dataSrc: function (json) {
-            //    // 手动清理循环引用
-            //    json.data.forEach(item => {
-            //        if (item.category?.products) {
-            //            item.category.products = null;
-            //        }
-            //    });
-            //    return json.data;
-            //}
+            url: '/admin/api/companyapi/getall',
         },
         "language": { url: '//cdn.datatables.net/plug-ins/2.3.2/i18n/zh.json'},
         "columns": [
-            { data: 'title', "width": "25%" },
-            { data: 'isbn', "width": "15%" },
-            { data: 'author', "width": "15%" },
-            { data: 'listPrice', "width": "10%" },
-            { data: 'category.name', "width": "10%" },
+            { data: 'name', "width": "25%" },
+            { data: 'state', "width": "15%" },
+            { data: 'city', "width": "15%" },
+            { data: 'phoneNumber', "width": "10%" },
             {
-                data: 'productId',
+                data: 'id',
                 "render": function (data) {
                     return `
                         <div class="w-50 btn-group" role="group">
-                            <a href="/admin/product/updateandinsert?id=${data}" class="btn btn-primary">
+                            <a href="/admin/company/updateandinsert?id=${data}" class="btn btn-primary">
                                 <i class="bi bi-pencil-square"></i> &ensp;编辑
                             </a>
-                            <a Onclick=Delete('/admin/api/productapi/delete/${data}') class="btn btn-danger">
+                            <a Onclick=Delete('/admin/api/companyapi/delete/${data}') class="btn btn-danger">
                                 <i class="bi bi-trash-fill"></i> &ensp;删除
                             </a>
                         </div>`;

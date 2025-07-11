@@ -11,157 +11,65 @@ using System.Threading.Tasks;
 namespace NETCore_MVC_BulkyWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin)]
-    public class ProductController : Controller
+    //[Authorize(Roles = SD.Role_Admin)]
+    public class CompanyController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
+        public CompanyController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            this.webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
         {
-            var productList = unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            var companyList = unitOfWork.Company.GetAll().ToList();
              
-            return View(productList);
+            return View(companyList);
         }
 
         public IActionResult UpdateAndInsert(int? id)
         {
-            IEnumerable<SelectListItem> categoryList = unitOfWork.Category.GetAll()
-                .Select(c => new SelectListItem
-                {
-                    Text = c.Name,
-                    Value = c.Id.ToString()
-                });
-
-            ProductViewModel productViewModel = new()
-            {
-                Product = new Product(),
-                CatetoryList = categoryList
-            };
-
             if (id is null || id == 0)
             {
                 //创建 Create
-                return View(productViewModel);
+                return View(new Company());
             }
             else
             {
                 //更新 Update
-                var productForId = unitOfWork.Product.Get(p => p.ProductId == id);
-                if (productForId is null)
-                {
-                    return NotFound();
-                }
-
-                productViewModel.Product = productForId;
-                return View(productViewModel);
+                var companyObj = unitOfWork.Company.Get(c => c.Id == id);
+                return View(companyObj);
             }
 
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateAndInsert(ProductViewModel productViewModel, IFormFile? file)
+        public async Task<IActionResult> UpdateAndInsert(Company companyObj)
         {
             if (ModelState.IsValid)
             {
-                string wwwRootPath = webHostEnvironment.WebRootPath;
-
-                if (file is not null)
+                if (companyObj.Id == 0)
                 {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string productPath = Path.Combine(wwwRootPath, @"images\product");
-
-                    if (!string.IsNullOrEmpty(productViewModel.Product.ImageUrl))
-                    {
-                        //删除旧图片
-                        var oldImagePath = Path
-                            .Combine(wwwRootPath, productViewModel.Product.ImageUrl
-                            .TrimStart('\\'));
-
-                        if (System.IO.File.Exists(oldImagePath))
-                        {
-                            System.IO.File.Delete(oldImagePath);
-                        }
-                    }
-
-                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
-                    {
-                        file.CopyTo(fileStream);
-                    }
-
-                    productViewModel.Product.ImageUrl = @"\images\product\" + fileName;
-                }
-
-                if (productViewModel.Product.ProductId == 0)
-                {
-                    unitOfWork.Product.Add(productViewModel.Product);
+                    unitOfWork.Company.Add(companyObj);
+                    TempData["success"] = "创建成功。";
                 }
                 else
                 {
-                    unitOfWork.Product.Update(productViewModel.Product);
+                    unitOfWork.Company.Update(companyObj);
+                    TempData["success"] = "更新成功。";
                 }
 
                 await unitOfWork.SaveAsync();
-                TempData["success"] = "产品创建成功。";
-                return RedirectToAction("Index", "Product");
+                return RedirectToAction("Index", "Company");
             }
             else
             {
-                IEnumerable<SelectListItem> categoryList = unitOfWork.Category.GetAll()
-                .Select(c => new SelectListItem
-                {
-                    Text = c.Name,
-                    Value = c.Id.ToString()
-                });
+                TempData["error"] = "操作失败！";
 
-                productViewModel.CatetoryList = categoryList;
-
-                TempData["error"] = "产品创建失败！";
-
-                return View(productViewModel);
+                return View(companyObj);
             }
         }
-
-        //public IActionResult Edit(int? id)
-        //{
-        //    if (id is null || id == 0)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var productFromDb = unitOfWork.Product.Get(p => p.ProductId == id);
-        //    if (productFromDb == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(productFromDb);
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> Edit(Product product)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        unitOfWork.Product.Update(product);
-        //        await unitOfWork.SaveAsync();
-
-        //        TempData["success"] = "产品更新成功。";
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        TempData["error"] = "产品更新失败！";
-        //    }
-
-        //    return View();
-        //}
 
         public IActionResult Delete(int? id)
         {
@@ -170,30 +78,30 @@ namespace NETCore_MVC_BulkyWeb.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var productFromDb = unitOfWork.Product.Get(p => p.ProductId == id);
-            if (productFromDb == null)
+            var companyFromDb = unitOfWork.Company.Get(p => p.Id == id);
+            if (companyFromDb == null)
             {
                 return NotFound();
             }
 
-            return View(productFromDb);
+            return View(companyFromDb);
         }
 
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeletePOST(int? id)
         {
-            var productFromDb = unitOfWork.Product.Get(p => p.ProductId == id);
+            var companyFromDb = unitOfWork.Company.Get(p => p.Id == id);
 
-            if (productFromDb is null)
+            if (companyFromDb is null)
             {
                 return NotFound();
             }
 
-            unitOfWork.Product.Remove(productFromDb);
+            unitOfWork.Company.Remove(companyFromDb);
             await unitOfWork.SaveAsync();
 
             TempData["success"] = "产品删除成功。";
-            return RedirectToAction("Index", "Product");
+            return RedirectToAction("Index", "Company");
         }
 
         //#region API CALLS
@@ -201,11 +109,11 @@ namespace NETCore_MVC_BulkyWeb.Areas.Admin.Controllers
         //[HttpGet]
         //public IActionResult GetAll()
         //{
-        //    var productList = unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+        //    var companyList = unitOfWork.Company.GetAll(includeProperties: "Category").ToList();
 
-        //    var productDtos = productList.Select(p => new ProductDTO
+        //    var companyDtos = companyList.Select(p => new CompanyDTO
         //    {
-        //        ProductId = p.ProductId,
+        //        CompanyId = p.CompanyId,
         //        Title = p.Title,
         //        Description = p.Description,
         //        ISBN = p.ISBN,
@@ -220,14 +128,14 @@ namespace NETCore_MVC_BulkyWeb.Areas.Admin.Controllers
         //    }).ToList();
 
         //    //返回标准化JSON响应
-        //    return Ok(new { data = productDtos });
+        //    return Ok(new { data = companyDtos });
         //}
 
         //[HttpDelete]
         //public async Task<IActionResult> Delete(int? id)
         //{
-        //    var productToBeDeleted = unitOfWork.Product.Get(p => p.ProductId == id);
-        //    if (productToBeDeleted is null)
+        //    var companyToBeDeleted = unitOfWork.Company.Get(p => p.CompanyId == id);
+        //    if (companyToBeDeleted is null)
         //    {
         //        return Json(new { success = false, message = "删除失败！" });
         //    }
@@ -235,14 +143,14 @@ namespace NETCore_MVC_BulkyWeb.Areas.Admin.Controllers
         //    //删除旧图片
         //    var oldImagePath = Path
         //        .Combine(webHostEnvironment.WebRootPath, 
-        //        productToBeDeleted.ImageUrl.TrimStart('\\'));
+        //        companyToBeDeleted.ImageUrl.TrimStart('\\'));
 
         //    if (System.IO.File.Exists(oldImagePath))
         //    {
         //        System.IO.File.Delete(oldImagePath);
         //    }
 
-        //    unitOfWork.Product.Remove(productToBeDeleted);
+        //    unitOfWork.Company.Remove(companyToBeDeleted);
         //    await unitOfWork.SaveAsync();
 
         //    return Json(new { success = true, message = "删除成功！" });

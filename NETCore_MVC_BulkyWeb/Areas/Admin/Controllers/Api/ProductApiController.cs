@@ -9,7 +9,7 @@ namespace NETCore_MVC_BulkyWeb.Areas.Admin.Controllers.Api
     [Area("Admin")]
     [ApiController]
     [Route("admin/api/[controller]")]
-    [Authorize(Roles = SD.Role_Admin)]
+    //[Authorize(Roles = SD.Role_Admin)]
     public class ProductApiController: ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
@@ -21,7 +21,7 @@ namespace NETCore_MVC_BulkyWeb.Areas.Admin.Controllers.Api
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        [HttpGet]
+        [HttpGet("getall")]
         public IActionResult GetAll()
         {
             var productList = unitOfWork.Product.GetAll(includeProperties: "Category").ToList();

@@ -78,6 +78,12 @@
                         </select>
                     </div>
 
+                    <div class="form-floating mb-3 col-6">
+                        <select asp-for="Input.CompanyId" style="display:none" asp-items="@Model.Input.CompanyList" class="form-select">
+                            <option disabled selected>- 请选择所属的公司 -</option>
+                        </select>
+                    </div>
+
                     <div class="col-12">
                         <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">注册</button>
                     </div>
@@ -123,4 +129,18 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            $('#Input_Role').change(function () {
+                var selection = $('#Input_Role Option:Selected').text();
+                if(selection == '公司'){
+                    $('#Input_CompanyId').show()
+                }
+                else{
+                    $('#Input_CompanyId').hide();
+                }
+            })
+        })
+    </script>
 }

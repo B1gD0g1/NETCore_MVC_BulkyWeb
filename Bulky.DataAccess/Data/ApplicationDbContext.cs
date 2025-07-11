@@ -15,6 +15,8 @@ namespace Bulky.DataAccess.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Company> Companies { get; set; }
+
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
 
@@ -23,6 +25,7 @@ namespace Bulky.DataAccess.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new CompanyConfiguration());
 
 
             //Seed Data
@@ -31,6 +34,38 @@ namespace Bulky.DataAccess.Data
                 new Category { Id = 2, Name = "SciFi", DisplayOrder = 2},
                 new Category { Id = 3, Name = "History", DisplayOrder = 3}
                 );
+
+            modelBuilder.Entity<Company>().HasData(
+                new Company
+                {
+                    Id = 1,
+                    Name = "海上堡垒",
+                    StreetAddress = "黄埔街",
+                    City = "上海市",
+                    State = "上海市",
+                    PostalCode = "200000",
+                    PhoneNumber = "000-12345678",
+                },
+                new Company
+                {
+                    Id = 2,
+                    Name = "测试公司",
+                    StreetAddress = "测试街道",
+                    City = "北京市",
+                    State = "北京市",
+                    PostalCode = "100000",
+                    PhoneNumber = "111-98765432",
+                },
+                new Company
+                {
+                    Id = 3,
+                    Name = "青年俱乐部",
+                    StreetAddress = "青年路",
+                    City = "广州市",
+                    State = "广东省",
+                    PostalCode = "510000",
+                    PhoneNumber = "222-55555555",
+                });
 
             modelBuilder.Entity<Product>().HasData(
                 new Product
@@ -116,8 +151,7 @@ namespace Bulky.DataAccess.Data
                     Price100 = 20,
                     CategoryId = 2,
                     ImageUrl = ""
-                }
-                );
+                });
         }
     }
 }
