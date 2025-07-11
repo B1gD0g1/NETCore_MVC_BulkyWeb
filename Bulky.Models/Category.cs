@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Bulky.Models
@@ -17,6 +18,7 @@ namespace Bulky.Models
         //[Range(1,100, ErrorMessage = "该字段必须在1~100之间。")]
         public int DisplayOrder { get; set; }
 
+        [ValidateNever]
         public List<Product> Products { get; set; }
 
 
