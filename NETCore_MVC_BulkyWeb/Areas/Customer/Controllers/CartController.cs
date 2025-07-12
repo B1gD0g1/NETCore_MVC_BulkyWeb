@@ -31,13 +31,14 @@ namespace NETCore_MVC_BulkyWeb.Areas.Customer.Controllers
             ShoppingCartViewModel = new()
             {
                 ShoppingCartList = _unitOfWork.ShoppingCart
-                    .GetAll(sc => sc.ApplicationUserId == userId, includeProperties: "Product")
+                    .GetAll(sc => sc.ApplicationUserId == userId, includeProperties: "Product"),
+                OrderHeader = new OrderHeader()
             };
 
             foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
             {
                 cart.Price = GetPriceBasedOnQuantity(cart);
-                ShoppingCartViewModel.OrderTotal += (cart.Price * cart.Count);
+                ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
 
             return View(ShoppingCartViewModel);
@@ -45,7 +46,33 @@ namespace NETCore_MVC_BulkyWeb.Areas.Customer.Controllers
 
         public IActionResult Summary()
         {
-            return View();
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            ShoppingCartViewModel = new()
+            {
+                ShoppingCartList = _unitOfWork.ShoppingCart
+                    .GetAll(sc => sc.ApplicationUserId == userId, includeProperties: "Product"),
+                OrderHeader = new OrderHeader()
+            };
+
+            ShoppingCartViewModel.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(a => a.Id == userId);
+
+            ShoppingCartViewModel.OrderHeader.Name = ShoppingCartViewModel.OrderHeader.ApplicationUser.Name;
+            ShoppingCartViewModel.OrderHeader.PhoneNumber = ShoppingCartViewModel.OrderHeader.ApplicationUser.PhoneNumber;
+            ShoppingCartViewModel.OrderHeader.StreetAddress = ShoppingCartViewModel.OrderHeader.ApplicationUser.StreetAddress;
+            ShoppingCartViewModel.OrderHeader.City = ShoppingCartViewModel.OrderHeader.ApplicationUser.City;
+            ShoppingCartViewModel.OrderHeader.State = ShoppingCartViewModel.OrderHeader.ApplicationUser.State;
+            ShoppingCartViewModel.OrderHeader.PostalCode = ShoppingCartViewModel.OrderHeader.ApplicationUser.PostalCode;
+
+
+            foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+            {
+                cart.Price = GetPriceBasedOnQuantity(cart);
+                ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+            }
+
+            return View(ShoppingCartViewModel);
         }
 
         public async Task<IActionResult> Plus(int cartId)
