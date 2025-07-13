@@ -1,6 +1,7 @@
 ﻿using Bulky.DataAccess.Data;
 using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models;
+using Microsoft.Identity.Client.AppConfig;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,40 @@ namespace Bulky.DataAccess.Repository
         public void Update(OrderHeader orderHeaderObj)
         {
             dbContext.OrderHeaders.Update(orderHeaderObj);
+        }
+
+        public void UpdateStatus(int id, string orderStatus, string? paymentStatus = null)
+        {
+            var orderFromDb = dbContext.OrderHeaders.FirstOrDefault(u => u.Id == id);
+
+            if (orderFromDb is not null)
+            {
+                orderFromDb.OrderStatus = orderStatus;
+                if (!string.IsNullOrEmpty(paymentStatus))
+                {
+                    orderFromDb.PaymentStatus = paymentStatus;
+                }
+            }
+        }
+
+        public void UpdateStripePaymentId(int id, string sessionId, string paymentIntendId)
+        {
+            var orderFromDb = dbContext.OrderHeaders.FirstOrDefault(u => u.Id == id);
+
+            if (orderFromDb is not null)
+            {
+                if (!string.IsNullOrEmpty(sessionId))
+                {
+                    orderFromDb.SessionId = sessionId;
+                }
+
+                if (!string.IsNullOrEmpty(paymentIntendId))
+                {
+                    orderFromDb.PaymentIntentId = paymentIntendId;
+                    orderFromDb.PaymentDate = DateTime.Now;
+                }
+            }
+
         }
     }
 }

@@ -1,0 +1,15 @@
+﻿@model int
+
+<div class="container row pt-4">
+    <div class="col-12 text-center">
+        <h1 class="text-success">订单已成功提交！</h1>
+        <br />
+        <br />
+        <br />
+        <h3 class="text-secondary">您的订单号是：<span class="text-info">@Model</span></h3>
+        <br />
+        <br />
+        @* <p class="text-muted">感谢您的购买，我们会尽快处理您的订单。</p> *@
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">返回首页</a>
+    </div>
+</div>
