@@ -1,0 +1,17 @@
+﻿@model int
+
+<div class="container row pt-4">
+    <div class="col-12 text-center">
+        <h1 class="text-success">付款成功！</h1>
+        <br />
+        <br />
+        <br />
+        <h3 class="text-secondary">您的订单号是：<span class="text-info">@Model</span></h3>
+        <br />
+        <br />
+        <a asp-area="Admin" asp-controller="Order" asp-action="Details" 
+            asp-route-orderId="@Model" class="btn btn-primary">
+            返回订单详情
+        </a>
+    </div>
+</div>

@@ -35,16 +35,27 @@ namespace Bulky.Models
         public string? PaymentIntentId { get; set; }
 
         [Required]
+        [Display(Name = "电话号码")]
         public string PhoneNumber { get; set; }
+
         [Required]
+        [Display(Name = "地址")]
         public string StreetAddress { get; set; }
+
         [Required]
+        [Display(Name = "城市")]
         public string City { get; set; }
+
         [Required]
+        [Display(Name = "省份")]
         public string State { get; set; }
+
         [Required]
+        [Display(Name = "邮政编码")]
         public string PostalCode { get; set; }
+
         [Required]
+        [Display(Name = "姓名")]
         public string Name { get; set; }
     }
 }
